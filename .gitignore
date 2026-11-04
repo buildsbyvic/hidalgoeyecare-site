@@ -1,0 +1,5 @@
+CLAUDE.md
+_private/
+_src/img-source/
+__pycache__/
+.claude/
