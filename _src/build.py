@@ -24,12 +24,12 @@ PAGES = [
     dict(src="home", slug="", nav="home",
          title=f"{NAME} | Optometrist in Tampa, FL",
          title_es=f"{NAME} | Optometrista en Tampa, FL",
-         desc="Eye exams, contact lenses, Optomap retinal imaging and a full optical with its own lens lab. "
+         desc="Eye exams, contact lenses, Optomap imaging, Eterna dry eye treatment and a full optical with its own lens lab. "
               "Se habla español. W Hillsborough Ave, Tampa, FL."),
     dict(src="services", slug="services/", nav="services",
          title=f"Eye Care Services | {NAME}",
          title_es=f"Servicios de cuidado de la vista | {NAME}",
-         desc="Comprehensive eye exams, contact lens fittings, Ortho-K and Optomap retinal imaging with "
+         desc="Comprehensive eye exams, contact lens fittings, Ortho-K, Optomap imaging and Eterna dry eye treatment with "
               "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español."),
     dict(src="eyewear", slug="eyewear/", nav="eyewear",
          title=f"Eyewear & Lens Lab | {NAME}",

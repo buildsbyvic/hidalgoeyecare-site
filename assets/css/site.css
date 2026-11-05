@@ -292,6 +292,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.14);paddin
 .rv-all{text-align:center;margin:26px 0 0;font-weight:600}
 .rv-body{flex:1;margin:14px 0 20px}
 .rv-body blockquote{margin:0}
+.price-side{width:100%;max-width:400px;justify-self:center;text-align:center}
+.price-side .ins-note{margin:18px 0 0}
+.price-side .fine{margin:8px 0 0}
 .split-img{width:100%;height:auto;border-radius:12px;box-shadow:var(--shadow);object-fit:cover}
 .split-img.sq{aspect-ratio:1/1}
 .split-img.tall{aspect-ratio:4/5;max-width:460px;justify-self:center}
