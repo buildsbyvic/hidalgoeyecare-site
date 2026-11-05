@@ -3,6 +3,35 @@
 (function () {
   'use strict';
 
+  /* Language button. The first paint is decided by the inline script in <head>. */
+  var htmlEl = document.documentElement;
+  function setAttrs(lang) {
+    /* [Spanish source, attribute it fills, where the English original is kept] */
+    [['data-aria-es', 'aria-label', 'ariaEn'], ['data-alt-es', 'alt', 'altEn'], ['data-title-es', 'title', 'titleEn']].forEach(function (x) {
+      document.querySelectorAll('[' + x[0] + ']').forEach(function (el) {
+        if (el === htmlEl) return;
+        if (el.dataset[x[2]] === undefined) el.dataset[x[2]] = el.getAttribute(x[1]) || '';
+        el.setAttribute(x[1], lang === 'es' ? el.getAttribute(x[0]) : el.dataset[x[2]]);
+      });
+    });
+  }
+  function setLang(lang) {
+    htmlEl.setAttribute('data-lang', lang);
+    htmlEl.lang = lang;
+    document.title = htmlEl.getAttribute(lang === 'es' ? 'data-title-es' : 'data-title-en');
+    setAttrs(lang);
+    window.dispatchEvent(new Event('resize')); /* carousels recount their pages */
+  }
+  setAttrs(htmlEl.getAttribute('data-lang') || 'en');
+  var langBtn = document.getElementById('langBtn');
+  if (langBtn) {
+    langBtn.addEventListener('click', function () {
+      var next = htmlEl.getAttribute('data-lang') === 'es' ? 'en' : 'es';
+      try { localStorage.setItem('lang', next); } catch (err) { /* still switches for this page */ }
+      setLang(next);
+    });
+  }
+
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
 
@@ -46,15 +75,14 @@
       var isHol = hol.some(function (x) { return x[0] === m && x[1] === d; });
       var mins = h * 60 + min;
       var open = !isHol && dow >= 1 && dow <= 5 && mins >= 540 && mins < 1020;
-      var text = document.getElementById('stateText');
-      var sub = document.getElementById('stateSub');
+      var put = function (id, value) { document.getElementById(id).textContent = value; };
       if (open) {
         status.classList.add('open');
-        text.textContent = 'Open now until 5 PM';
-        sub.textContent = 'Abierto ahora hasta las 5 PM';
+        put('stateEn', 'Open now'); put('subEn', 'Until 5 PM');
+        put('stateEs', 'Abierto ahora'); put('subEs', 'Hasta las 5 PM');
       } else {
-        text.textContent = isHol ? 'Closed today for the holiday' : 'Closed now';
-        sub.textContent = (isHol ? 'Cerrado hoy por día feriado' : 'Cerrado ahora') + ' · Lun–Vie 9–5';
+        put('stateEn', isHol ? 'Closed today for the holiday' : 'Closed now'); put('subEn', 'Mon–Fri 9–5');
+        put('stateEs', isHol ? 'Cerrado hoy por día feriado' : 'Cerrado ahora'); put('subEs', 'Lun–Vie 9–5');
       }
     } catch (err) { /* the static hours stay visible */ }
   }

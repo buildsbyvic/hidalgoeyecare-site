@@ -24,26 +24,32 @@ WRITE_CNAME = False
 PAGES = [
     dict(src="home", slug="", nav="home",
          title=f"{NAME} | Optometrist in Tampa, FL",
+         title_es=f"{NAME} | Optometrista en Tampa, FL",
          desc="Eye exams, contact lenses, Optomap retinal imaging and a full optical with its own lens lab. "
               "Se habla español. W Hillsborough Ave, Tampa, FL."),
     dict(src="services", slug="services/", nav="services",
          title=f"Eye Care Services | {NAME}",
+         title_es=f"Servicios de cuidado de la vista | {NAME}",
          desc="Comprehensive eye exams, contact lens fittings, Ortho-K and Optomap retinal imaging with "
               "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español."),
     dict(src="eyewear", slug="eyewear/", nav="eyewear",
          title=f"Eyewear & Lens Lab | {NAME}",
+         title_es=f"Espejuelos y laboratorio de lentes | {NAME}",
          desc="Designer and affordable frames, with lenses cut and fit in our own lab on "
               "W Hillsborough Ave in Tampa. Se habla español."),
     dict(src="insurance", slug="insurance/", nav="insurance",
          title=f"Insurance & Appointments | {NAME}",
+         title_es=f"Seguros y citas | {NAME}",
          desc="We accept most vision plans, plus Medicare and Medicaid. Call to confirm yours. Self-pay exams are $60, or $95 with Optomap. "
               "Cash, card or CareCredit. Answers to common questions."),
     dict(src="about", slug="about-us/", nav="about",
          title=f"About Us | {NAME}",
+         title_es=f"Nosotros | {NAME}",
          desc="Family-owned eye care in Tampa since 2019, founded by Dr. Janet Hidalgo, O.D., and Carlos Hidalgo. "
               "Meet the doctor and the team."),
     dict(src="contact", slug="contact-us/", nav="contact",
          title=f"Contact & Location | {NAME}",
+         title_es=f"Contacto y ubicación | {NAME}",
          desc="5011 W Hillsborough Ave, Suite F, Tampa, FL 33634. Call (813) 373-5873. "
               "Open Monday to Friday, 9 AM to 5 PM. Walk-ins welcome."),
 ]
@@ -52,6 +58,7 @@ PRIVACY_SRC = SRC / "pages" / "privacy.html"
 if PRIVACY_SRC.exists():
     PAGES.append(dict(src="privacy", slug="privacy/", nav=None,
                       title=f"Notice of Privacy Practices | {NAME}",
+         title_es=f"Aviso de Privacidad | {NAME}",
                       desc="Notice of Privacy Practices for Hidalgo Eye Care & Optical. "
                            "Aviso de Privacidad."))
 
@@ -97,6 +104,16 @@ LD = {
     "sameAs": ["https://www.facebook.com/hidalgoeyecare", "https://www.instagram.com/hidalgoeyecare"],
 }
 
+# Runs before first paint, so the page never flashes the wrong language.
+# Saved choice first, then the browser's language. Without JavaScript both languages show.
+LANG_BOOT = (
+    "<script>(function(){var h=document.documentElement,l;"
+    "try{l=localStorage.getItem('lang')}catch(e){}"
+    "if(l!=='en'&&l!=='es')l=(navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en';"
+    "h.setAttribute('data-lang',l);h.lang=l;"
+    "document.title=h.getAttribute('data-title-'+l)})()</script>"
+)
+
 ARROW_L = '<path d="m15 18-6-6 6-6"/>'
 ARROW_R = '<path d="m9 18 6-6-6-6"/>'
 
@@ -117,25 +134,30 @@ def e(s):
 
 def carousel():
     cards = []
+    stars = '<span class="stars" role="img" aria-label="5 stars" data-aria-es="5 estrellas">★★★★★</span>'
     for r in json.loads(read(SRC / "reviews.json")):
-        es = "en" in r
-        tr = f'<p class="tr"><span>English translation</span>{e(r["en"])}</p>' if es else ""
-        lang = ' lang="es"' if es else ""
-        small = 'Google review · <span lang="es">reseña en español</span>' if es else "Google review"
+        if "en" in r:  # written in Spanish: original in Spanish mode, translation in English mode
+            body = (f'<blockquote class="en">{e(r["en"])}</blockquote>'
+                    f'<blockquote class="es" lang="es">{e(r["text"])}</blockquote>')
+            small = ('<span class="en">Google review, translated from Spanish</span>'
+                     '<span class="es" lang="es">Reseña de Google</span>')
+        else:  # written in English: shown as written in both modes, never machine-translated
+            body = f'<blockquote lang="en">{e(r["text"])}</blockquote>'
+            small = ('<span class="en">Google review</span>'
+                     '<span class="es" lang="es">Reseña de Google, escrita en inglés</span>')
         cards.append(
-            f'<figure class="review"><span class="stars" role="img" aria-label="5 stars">★★★★★</span>'
-            f'<div class="rv-body"><blockquote{lang}>{e(r["text"])}</blockquote>{tr}</div>'
+            f'<figure class="review{" rv-es" if "en" in r else ""}">{stars}<div class="rv-body">{body}</div>'
             f'<figcaption>{e(r["name"])}<small>{small}</small></figcaption></figure>')
     svg = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" '
            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg>')
     return (
         '<div class="rv" data-carousel>\n'
-        '      <div class="rv-track" tabindex="0" role="group" aria-label="Patient reviews. Use the arrow keys to scroll.">'
+        '      <div class="rv-track" tabindex="0" role="group" aria-label="Patient reviews. Use the arrow keys to scroll." data-aria-es="Reseñas de pacientes. Use las flechas del teclado para desplazarse.">'
         + "".join(cards) + '</div>\n'
         '      <div class="rv-nav">\n'
-        f'        <button class="rv-btn" type="button" data-dir="-1" aria-label="Previous reviews">{svg % ARROW_L}</button>\n'
+        f'        <button class="rv-btn" type="button" data-dir="-1" aria-label="Previous reviews" data-aria-es="Reseñas anteriores">{svg % ARROW_L}</button>\n'
         '        <div class="rv-dots" aria-hidden="true"></div>\n'
-        f'        <button class="rv-btn" type="button" data-dir="1" aria-label="Next reviews">{svg % ARROW_R}</button>\n'
+        f'        <button class="rv-btn" type="button" data-dir="1" aria-label="Next reviews" data-aria-es="Reseñas siguientes">{svg % ARROW_R}</button>\n'
         '      </div>\n'
         '    </div>')
 
@@ -158,6 +180,7 @@ def layout(page, body, root, flags, year, canonical=True):
     url = f"{SITE}/{page['slug']}"
     head = [
         '<meta charset="utf-8">',
+        LANG_BOOT,
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
         f'<title>{e(page["title"])}</title>',
         f'<meta name="description" content="{e(page["desc"])}">',
@@ -191,8 +214,8 @@ def layout(page, body, root, flags, year, canonical=True):
     head.append(f'<script src="{root}assets/js/site.js" defer></script>')
 
     doc = (
-        '<!DOCTYPE html>\n<html lang="en">\n<head>\n' + "\n".join(head) + '\n</head>\n<body>\n'
-        '<a class="skip" href="#main">Skip to content · <span lang="es">Ir al contenido</span></a>\n'
+        f'<!DOCTYPE html>\n<html lang="en" data-title-en="{e(page["title"])}" data-title-es="{e(page["title_es"])}">\n<head>\n' + "\n".join(head) + '\n</head>\n<body>\n'
+        '<a class="skip" href="#main"><span class="en">Skip to content</span><span class="es" lang="es">Ir al contenido</span></a>\n'
         + header + '\n<main id="main" tabindex="-1">\n' + body + '\n</main>\n\n' + footer + '</body>\n</html>\n'
     )
     doc = conditionals(doc, flags)
@@ -227,6 +250,7 @@ def main():
 
     notfound = dict(src="404", slug="404.html", nav=None,
                     title=f"Page not found | {NAME}",
+         title_es=f"Página no encontrada | {NAME}",
                     desc="This page could not be found. Call Hidalgo Eye Care & Optical at (813) 373-5873.")
     # 404.html is served from any depth, so it alone uses root-absolute paths.
     write("404.html", layout(notfound, read(SRC / "pages" / "404.html"), "/", flags, today.year, canonical=False))
