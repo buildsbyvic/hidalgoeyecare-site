@@ -17,9 +17,8 @@ SRC = ROOT / "_src"
 SITE = "https://hidalgoeyecare.com"
 NAME = "Hidalgo Eye Care & Optical"
 
-# Set True for the final push. While False the github.io test URL stays reachable,
-# because a CNAME file makes GitHub redirect that URL to the custom domain.
-WRITE_CNAME = False
+# The custom domain is live, so every build keeps the CNAME file.
+WRITE_CNAME = True
 
 PAGES = [
     dict(src="home", slug="", nav="home",
