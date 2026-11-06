@@ -136,6 +136,7 @@ a.card .pair{flex:1}
 @media (min-width:880px){.band{grid-template-columns:1.3fr auto}}
 .band h2 .en,.band h2 .es{color:#fff}
 .band .actions{display:flex;flex-wrap:wrap;gap:12px}
+.center-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:36px}
 
 /* ============ Inner page banner ============ */
 .page-hero{background:linear-gradient(120deg,var(--brand-dark) 0%,#0C6CAD 100%);color:#fff;padding:56px 0 52px}
