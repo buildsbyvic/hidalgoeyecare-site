@@ -4,14 +4,15 @@ each page has its metadata, and nothing on the private word list is in a file
 that would be committed. The word list lives in _private/ and is never committed."""
 import json
 import re
+import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", ".claude", "_private", "img-source", "__pycache__"}
-SKIP_FILES = {"CLAUDE.md", "check.py"}
+SKIP_DIRS = {".git", "_private", "img-source", "__pycache__"}
+SKIP_FILES = {"check.py"}
 TEXT = {".html", ".css", ".js", ".json", ".py", ".xml", ".txt", ".md"}
 problems = []
 
@@ -63,8 +64,15 @@ class Page(HTMLParser):
 
 
 def tracked():
-    for p in ROOT.rglob("*"):
-        if p.is_file() and not (set(p.relative_to(ROOT).parts) & SKIP_DIRS) and p.name not in SKIP_FILES:
+    """Files git would commit: tracked, plus new files that no ignore rule covers."""
+    try:
+        out = subprocess.run(["git", "ls-files", "-co", "--exclude-standard"], cwd=ROOT,
+                             capture_output=True, text=True, check=True).stdout.splitlines()
+        files = [ROOT / line for line in out]
+    except (OSError, subprocess.CalledProcessError):
+        files = [p for p in ROOT.rglob("*") if not (set(p.relative_to(ROOT).parts) & SKIP_DIRS)]
+    for p in files:
+        if p.is_file() and p.name not in SKIP_FILES:
             yield p
 
 
