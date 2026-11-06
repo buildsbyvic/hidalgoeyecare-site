@@ -35,6 +35,13 @@ PAGES = [
               "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español.",
          desc_es="Exámenes completos de la vista, adaptación de lentes de contacto, Orto-K, imagen Optomap y tratamiento "
                  "Eterna para el ojo seco con la Dra. Janet Hidalgo, O.D., en Tampa, FL."),
+    dict(src="optomap", slug="optomap/", nav="services",
+         title=f"Optomap Retinal Imaging in Tampa | {NAME}",
+         title_es=f"Imagen de la retina con Optomap en Tampa | {NAME}",
+         desc="Optomap captures a wide view of your retina in one quick, painless flash, and is often an alternative to dilating "
+              "drops. A $35 add-on to your eye exam with Dr. Janet Hidalgo, O.D., in Tampa, FL.",
+         desc_es="Optomap capta una vista amplia de la retina en un destello rápido y sin dolor, y muchas veces es una alternativa "
+                 "a las gotas para dilatar. Un servicio de $35 que se añade a su examen con la Dra. Janet Hidalgo, O.D., en Tampa, FL."),
     dict(src="dry-eye", slug="dry-eye/", nav="services",
          title=f"Dry Eye Treatment in Tampa | {NAME}",
          title_es=f"Tratamiento para el ojo seco en Tampa | {NAME}",
