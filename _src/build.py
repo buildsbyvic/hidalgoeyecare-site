@@ -35,6 +35,27 @@ PAGES = [
               "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español.",
          desc_es="Exámenes completos de la vista, adaptación de lentes de contacto, Orto-K, imagen Optomap y tratamiento "
                  "Eterna para el ojo seco con la Dra. Janet Hidalgo, O.D., en Tampa, FL."),
+    dict(src="dry-eye", slug="dry-eye/", nav="services",
+         title=f"Dry Eye Treatment in Tampa | {NAME}",
+         title_es=f"Tratamiento para el ojo seco en Tampa | {NAME}",
+         desc="Dry, burning or gritty eyes? Dr. Janet Hidalgo, O.D., offers in-office Eterna dry eye treatment in Tampa, FL. "
+              "About $100 per session. Se habla español.",
+         desc_es="¿Ojos secos, con ardor o sensación de arena? La Dra. Janet Hidalgo, O.D., ofrece el tratamiento Eterna para "
+                 "el ojo seco en su oficina en Tampa, FL. Unos $100 por sesión."),
+    dict(src="contact-lenses", slug="contact-lenses/", nav="services",
+         title=f"Contact Lens Exams & Fittings | {NAME}",
+         title_es=f"Examen y adaptación de lentes de contacto | {NAME}",
+         desc="Contact lens exams and fittings with Dr. Janet Hidalgo, O.D., in Tampa, FL, for first-time wearers and anyone "
+              "switching lenses. We check your insurance first. Se habla español.",
+         desc_es="Exámenes y adaptación de lentes de contacto con la Dra. Janet Hidalgo, O.D., en Tampa, FL, para quienes los "
+                 "usan por primera vez o quieren cambiar. Verificamos su seguro primero."),
+    dict(src="ortho-k", slug="ortho-k/", nav="services",
+         title=f"Ortho-K (Orthokeratology) in Tampa | {NAME}",
+         title_es=f"Orto-K (ortoqueratología) en Tampa | {NAME}",
+         desc="Ortho-K lenses worn overnight gently reshape the front of the eye for clear daytime vision without glasses or "
+              "daytime contacts. Ask Dr. Janet Hidalgo, O.D., in Tampa, FL.",
+         desc_es="Los lentes de Orto-K se usan al dormir y moldean suavemente la parte frontal del ojo para ver bien de día sin "
+                 "espejuelos ni lentes de contacto. Consulte con la Dra. Janet Hidalgo, O.D., en Tampa, FL."),
     dict(src="eyewear", slug="eyewear/", nav="eyewear",
          title=f"Eyewear & Lens Lab | {NAME}",
          title_es=f"Espejuelos y laboratorio de lentes | {NAME}",
