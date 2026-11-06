@@ -3,7 +3,8 @@
 (function () {
   'use strict';
 
-  /* Language button. The first paint is decided by the inline script in <head>. */
+  /* Language. Regular pages exist in each language (/page/ and /es/page/) and the button is a
+     plain link between them. Only 404.html holds both languages and switches in place. */
   var htmlEl = document.documentElement;
   function setAttrs(lang) {
     /* [Spanish source, attribute it fills, where the English original is kept] */
@@ -22,14 +23,17 @@
     setAttrs(lang);
     window.dispatchEvent(new Event('resize')); /* carousels recount their pages */
   }
-  setAttrs(htmlEl.getAttribute('data-lang') || 'en');
   var langBtn = document.getElementById('langBtn');
-  if (langBtn) {
-    langBtn.addEventListener('click', function () {
-      var next = htmlEl.getAttribute('data-lang') === 'es' ? 'en' : 'es';
-      try { localStorage.setItem('lang', next); } catch (err) { /* still switches for this page */ }
-      setLang(next);
-    });
+  if (htmlEl.hasAttribute('data-both')) {
+    setAttrs(htmlEl.getAttribute('data-lang') || 'en');
+    if (langBtn) {
+      langBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var next = htmlEl.getAttribute('data-lang') === 'es' ? 'en' : 'es';
+        try { localStorage.setItem('lang', next); } catch (err) { /* still switches for this page */ }
+        setLang(next);
+      });
+    }
   }
 
   var yr = document.getElementById('yr');
@@ -75,7 +79,8 @@
       var isHol = hol.some(function (x) { return x[0] === m && x[1] === d; });
       var mins = h * 60 + min;
       var open = !isHol && dow >= 1 && dow <= 5 && mins >= 540 && mins < 1020;
-      var put = function (id, value) { document.getElementById(id).textContent = value; };
+      /* Each page only has its own language's badge text */
+      var put = function (id, value) { var el = document.getElementById(id); if (el) el.textContent = value; };
       if (open) {
         status.classList.add('open');
         put('stateEn', 'Open now'); put('subEn', 'Until 5 PM');

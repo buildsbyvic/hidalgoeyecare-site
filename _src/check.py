@@ -133,6 +133,22 @@ for rel, pg in parsed.items():
     for block in pg.ld:
         if "rating" in json.dumps(json.loads(block)).lower():
             problems.append(f"{rel}: rating markup in JSON-LD")
+    # Each page except 404.html holds one language; Spanish pages link to Spanish pages
+    if rel != "404.html":
+        raw = (ROOT / rel).read_text(encoding="utf-8")
+        lang = "es" if rel.startswith("es/") else "en"
+        other = "en" if lang == "es" else "es"
+        if f'<html lang="{lang}"' not in raw:
+            problems.append(f"{rel}: html lang is not {lang}")
+        if f'class="{other}"' in raw or re.search(r'data-(aria|alt|title)-es=', raw):
+            problems.append(f"{rel}: still holds {other} text or Spanish attributes")
+        for a in re.finditer(r'<a\b[^>]*\bhref="([^"]+)"[^>]*>', raw):
+            ref, tag = a.group(1), a.group(0)
+            if 'id="langBtn"' in tag or re.match(r"(https?:|tel:|mailto:|#)", ref) or "assets/" in ref:
+                continue
+            path = urlparse(urljoin("/" + rel, ref)).path
+            if (lang == "es") != path.startswith("/es/"):
+                problems.append(f"{rel}: links to the other language: {ref}")
 
 titles = [p.title for r, p in parsed.items() if "refresh" not in p.meta]
 if len(set(titles)) != len(titles):

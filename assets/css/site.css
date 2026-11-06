@@ -334,6 +334,8 @@ html[data-lang="es"] .en{display:none!important}
 .utility .wrap{align-items:center}
 .lang-btn{display:inline-flex;align-items:center;gap:7px;min-height:32px;padding:5px 14px;border:0;border-radius:999px;background:#fff;color:var(--brand-dark);font:700 14px/1.2 var(--head);cursor:pointer}
 .lang-btn:hover{background:var(--sky-wash)}
+.utility a.lang-btn,a.lang-btn{text-decoration:none;color:var(--brand-dark)}
+.utility a.lang-btn:hover{color:var(--brand-dark)}
 html[data-lang="es"] .rv-es{order:-1} /* reviews written in Spanish come first in Spanish mode */
 /* Footer headings keep their small label size when they hold language runs */
 footer h2 .en,footer h2 .es{display:inline;font-size:inherit}

@@ -25,41 +25,53 @@ PAGES = [
          title=f"{NAME} | Optometrist in Tampa, FL",
          title_es=f"{NAME} | Optometrista en Tampa, FL",
          desc="Eye exams, contact lenses, Optomap imaging, Eterna dry eye treatment and a full optical with its own lens lab. "
-              "Se habla español. W Hillsborough Ave, Tampa, FL."),
+              "Se habla español. W Hillsborough Ave, Tampa, FL.",
+         desc_es="Exámenes de la vista, lentes de contacto, imagen Optomap, tratamiento Eterna para el ojo seco y una óptica "
+                 "con laboratorio propio. Doctora bilingüe en W Hillsborough Ave, Tampa, FL."),
     dict(src="services", slug="services/", nav="services",
          title=f"Eye Care Services | {NAME}",
          title_es=f"Servicios de cuidado de la vista | {NAME}",
          desc="Comprehensive eye exams, contact lens fittings, Ortho-K, Optomap imaging and Eterna dry eye treatment with "
-              "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español."),
+              "Dr. Janet Hidalgo, O.D., in Tampa, FL. Se habla español.",
+         desc_es="Exámenes completos de la vista, adaptación de lentes de contacto, Orto-K, imagen Optomap y tratamiento "
+                 "Eterna para el ojo seco con la Dra. Janet Hidalgo, O.D., en Tampa, FL."),
     dict(src="eyewear", slug="eyewear/", nav="eyewear",
          title=f"Eyewear & Lens Lab | {NAME}",
          title_es=f"Espejuelos y laboratorio de lentes | {NAME}",
          desc="Designer and affordable frames, with lenses cut and fit in our own lab on "
-              "W Hillsborough Ave in Tampa. Se habla español."),
+              "W Hillsborough Ave in Tampa. Se habla español.",
+         desc_es="Monturas de marca y económicas, con lentes cortados y montados en nuestro propio laboratorio "
+                 "en W Hillsborough Ave, Tampa."),
     dict(src="insurance", slug="insurance/", nav="insurance",
          title=f"Insurance & Appointments | {NAME}",
          title_es=f"Seguros y citas | {NAME}",
          desc="We accept most vision plans, plus Medicare and Medicaid. Call to confirm yours. Self-pay exams are $60, or $95 with Optomap. "
-              "Cash, card or CareCredit. Answers to common questions."),
+              "Cash, card or CareCredit. Answers to common questions.",
+         desc_es="Aceptamos la mayoría de los planes de visión, además de Medicare y Medicaid. Llame para confirmar el suyo. "
+                 "Examen sin seguro: $60, o $95 con Optomap. Efectivo, tarjeta o CareCredit."),
     dict(src="about", slug="about-us/", nav="about",
          title=f"About Us | {NAME}",
          title_es=f"Nosotros | {NAME}",
          desc="Family-owned eye care in Tampa since 2019, founded by Dr. Janet Hidalgo, O.D., and Carlos Hidalgo. "
-              "Meet the doctor and the team."),
+              "Meet the doctor and the team.",
+         desc_es="Cuidado de la vista familiar en Tampa desde 2019, fundado por la Dra. Janet Hidalgo, O.D., y Carlos Hidalgo. "
+                 "Conozca a la doctora y al equipo."),
     dict(src="contact", slug="contact-us/", nav="contact",
          title=f"Contact & Location | {NAME}",
          title_es=f"Contacto y ubicación | {NAME}",
          desc="5011 W Hillsborough Ave, Suite F, Tampa, FL 33634. Call (813) 373-5873. "
-              "Open Monday to Friday, 9 AM to 5 PM. Walk-ins welcome."),
+              "Open Monday to Friday, 9 AM to 5 PM. Walk-ins welcome.",
+         desc_es="5011 W Hillsborough Ave, Suite F, Tampa, FL 33634. Llame al (813) 373-5873. "
+                 "Abierto de lunes a viernes, de 9 AM a 5 PM. Aceptamos pacientes sin cita."),
 ]
 
 PRIVACY_SRC = SRC / "pages" / "privacy.html"
 if PRIVACY_SRC.exists():
     PAGES.append(dict(src="privacy", slug="privacy/", nav=None,
                       title=f"Notice of Privacy Practices | {NAME}",
-         title_es=f"Aviso de Privacidad | {NAME}",
-                      desc="Notice of Privacy Practices for Hidalgo Eye Care & Optical. "
-                           "Aviso de Privacidad."))
+                      title_es=f"Aviso de Privacidad | {NAME}",
+                      desc="Notice of Privacy Practices for Hidalgo Eye Care & Optical.",
+                      desc_es="Aviso de Privacidad de Hidalgo Eye Care & Optical."))
 
 # Old WordPress URLs and where each one lands now.
 REDIRECTS = {
@@ -103,10 +115,11 @@ LD = {
     "sameAs": ["https://www.facebook.com/hidalgoeyecare", "https://www.instagram.com/hidalgoeyecare"],
 }
 
-# Runs before first paint, so the page never flashes the wrong language.
-# Saved choice first, then the browser's language. Without JavaScript both languages show.
 UMAMI_ID = "3671e0c4-16dc-490d-964d-3c58b85f0c14"
 
+# English lives at /page/, Spanish at /es/page/. Each built page holds only its own language.
+# 404.html is the one page that holds both and switches in place, because GitHub serves the
+# same file for every missing address. This runs before first paint on it.
 LANG_BOOT = (
     "<script>(function(){var h=document.documentElement,l;"
     "try{l=localStorage.getItem('lang')}catch(e){}"
@@ -114,6 +127,58 @@ LANG_BOOT = (
     "h.setAttribute('data-lang',l);h.lang=l;"
     "document.title=h.getAttribute('data-title-'+l)})()</script>"
 )
+
+# Someone who picked a language with the button keeps it: if they land on the other
+# language's page (say from a search result), send them to the matching page.
+# Only an explicit choice counts, never the browser's language, so search engines see both.
+PREF_BOOT = (
+    "<script>(function(){var l;try{l=localStorage.getItem('lang')}catch(e){}"
+    "var h=document.documentElement;if((l==='en'||l==='es')&&l!==h.lang){"
+    "var a=document.querySelector('link[rel=alternate][hreflang='+l+']');"
+    "if(a)location.replace(new URL(a.href).pathname+location.search+location.hash)}})()</script>"
+)
+
+DROP_TAG = re.compile(r'<(\w+)\b[^>]*?\bclass="(en|es)"[^>]*>')
+LANG_ATTR = re.compile(r'\sdata-(aria|alt|title)-es="([^"]*)"')
+ATTR_FOR = {"aria": "aria-label", "alt": "alt", "title": "title"}
+
+
+def keep_language(doc, lang):
+    """Remove every element tagged with the other language, and fill in Spanish attributes."""
+    drop = "es" if lang == "en" else "en"
+    out, pos = [], 0
+    while True:
+        m = DROP_TAG.search(doc, pos)
+        if not m:
+            out.append(doc[pos:])
+            break
+        if m.group(2) != drop:
+            out.append(doc[pos:m.end()])
+            pos = m.end()
+            continue
+        tag, depth, i = m.group(1), 1, m.end()
+        pair = re.compile(rf'<(/?){tag}\b[^>]*>')
+        while depth:
+            n = pair.search(doc, i)
+            depth += -1 if n.group(1) else 1
+            i = n.end()
+        out.append(doc[pos:m.start()])
+        pos = i
+    doc = "".join(out)
+
+    def attrs(m):
+        tag = m.group(0)
+        if lang == "es":
+            for kind, value in LANG_ATTR.findall(tag):
+                name = ATTR_FOR[kind]
+                tag = re.sub(rf'\s{name}="[^"]*"', f' {name}="{value}"', tag, count=1)
+        return LANG_ATTR.sub("", tag)
+    return re.sub(r'<[a-zA-Z][^>]*\sdata-(?:aria|alt|title)-es="[^"]*"[^>]*>', attrs, doc)
+
+
+def page_links_to_spanish(text):
+    """Point links to other pages at their /es/ copies. Assets stay shared."""
+    return re.sub(r'href="\{\{root\}\}(?!assets/)', 'href="{{root}}es/', text)
 
 ARROW_L = '<path d="m15 18-6-6 6-6"/>'
 ARROW_R = '<path d="m9 18 6-6-6-6"/>'
@@ -171,23 +236,34 @@ def conditionals(text, flags):
     return pattern.sub(pick, text)
 
 
-def layout(page, body, root, flags, year, canonical=True):
+def layout(page, body, root, flags, year, lang="en", canonical=True):
+    """lang is "en" or "es" for a single-language page, or "both" for the 404 page."""
     nav = page.get("nav")
     header = read(SRC / "partials" / "header.html")
     header = re.sub(r'data-page="(\w+)"',
                     lambda m: 'aria-current="page"' if m.group(1) == nav else "", header)
     header = header.replace('<a href', '<a href').replace(' >', '>')
     footer = read(SRC / "partials" / "footer.html")
-    url = f"{SITE}/{page['slug']}"
-    head = [
-        '<meta charset="utf-8">',
-        LANG_BOOT,
+    es = lang == "es"
+    title, desc = (page["title_es"], page["desc_es"]) if es else (page["title"], page["desc"])
+    url_en, url_es = f"{SITE}/{page['slug']}", f"{SITE}/es/{page['slug']}"
+    url = url_es if es else url_en
+    head = ['<meta charset="utf-8">']
+    if lang == "both":
+        head.append(LANG_BOOT)
+    head += [
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
-        f'<title>{e(page["title"])}</title>',
-        f'<meta name="description" content="{e(page["desc"])}">',
+        f'<title>{e(title)}</title>',
+        f'<meta name="description" content="{e(desc)}">',
     ]
     if canonical:
-        head.append(f'<link rel="canonical" href="{url}">')
+        head += [
+            f'<link rel="canonical" href="{url}">',
+            f'<link rel="alternate" hreflang="en" href="{url_en}">',
+            f'<link rel="alternate" hreflang="es" href="{url_es}">',
+            f'<link rel="alternate" hreflang="x-default" href="{url_en}">',
+            PREF_BOOT,
+        ]
     else:
         head.append('<meta name="robots" content="noindex">')
     head += [
@@ -197,8 +273,9 @@ def layout(page, body, root, flags, year, canonical=True):
         f'<link rel="apple-touch-icon" href="{root}assets/img/apple-touch-180.png">',
         '<meta property="og:type" content="website">',
         f'<meta property="og:site_name" content="{e(NAME)}">',
-        f'<meta property="og:title" content="{e(page["title"])}">',
-        f'<meta property="og:description" content="{e(page["desc"])}">',
+        f'<meta property="og:title" content="{e(title)}">',
+        f'<meta property="og:description" content="{e(desc)}">',
+        f'<meta property="og:locale" content="{"es_US" if es else "en_US"}">',
         f'<meta property="og:image" content="{SITE}/assets/img/og-image.jpg">',
         '<meta property="og:image:width" content="1200">',
         '<meta property="og:image:height" content="630">',
@@ -216,14 +293,28 @@ def layout(page, body, root, flags, year, canonical=True):
     # Privacy-friendly visit and click counts (no cookies). Only counts on the real domain, not previews.
     head.append(f'<script defer src="https://cloud.umami.is/script.js" data-website-id="{UMAMI_ID}" data-domains="hidalgoeyecare.com"></script>')
 
+    if lang == "both":
+        html_tag = f'<html lang="en" data-both data-title-en="{e(page["title"])}" data-title-es="{e(page["title_es"])}">'
+        alt, alt_lang = "#", "es"
+    else:
+        html_tag = f'<html lang="{lang}" data-lang="{lang}">'
+        alt, alt_lang = (root + page["slug"], "en") if es else (root + "es/" + page["slug"], "es")
     doc = (
-        f'<!DOCTYPE html>\n<html lang="en" data-title-en="{e(page["title"])}" data-title-es="{e(page["title_es"])}">\n<head>\n' + "\n".join(head) + '\n</head>\n<body>\n'
+        f'<!DOCTYPE html>\n{html_tag}\n<head>\n' + "\n".join(head) + '\n</head>\n<body>\n'
         '<a class="skip" href="#main"><span class="en">Skip to content</span><span class="es" lang="es">Ir al contenido</span></a>\n'
         + header + '\n<main id="main" tabindex="-1">\n' + body + '\n</main>\n\n' + footer + '</body>\n</html>\n'
     )
     doc = conditionals(doc, flags)
-    return (doc.replace("{{root}}", root).replace("{{carousel}}", carousel())
-            .replace("{{year}}", str(year)))
+    if es:
+        doc = page_links_to_spanish(doc)
+    doc = (doc.replace("{{alt}}", alt or "./").replace("{{altlang}}", alt_lang)
+           .replace("{{root}}", root).replace("{{carousel}}", carousel())
+           .replace("{{year}}", str(year)))
+    if lang == "both":
+        # On 404.html the language control switches in place, so it is a button, not a link
+        return re.sub(r'<a class="lang-btn" id="langBtn"[^>]*>(.*?)</a>',
+                      r'<button class="lang-btn" id="langBtn" type="button">\1</button>', doc, flags=re.S)
+    return keep_language(doc, lang)
 
 
 def stub(path, target):
@@ -248,22 +339,29 @@ def main():
 
     for page in PAGES:
         body = read(SRC / "pages" / f"{page['src']}.html")
-        root = "../" * page["slug"].count("/") or "./"
-        write(page["slug"] + "index.html", layout(page, body, root, flags, today.year))
+        depth = page["slug"].count("/")
+        write(page["slug"] + "index.html", layout(page, body, "../" * depth or "./", flags, today.year, "en"))
+        write("es/" + page["slug"] + "index.html", layout(page, body, "../" * (depth + 1), flags, today.year, "es"))
 
     notfound = dict(src="404", slug="404.html", nav=None,
                     title=f"Page not found | {NAME}",
          title_es=f"Página no encontrada | {NAME}",
                     desc="This page could not be found. Call Hidalgo Eye Care & Optical at (813) 373-5873.")
     # 404.html is served from any depth, so it alone uses root-absolute paths.
-    write("404.html", layout(notfound, read(SRC / "pages" / "404.html"), "/", flags, today.year, canonical=False))
+    write("404.html", layout(notfound, read(SRC / "pages" / "404.html"), "/", flags, today.year, "both", canonical=False))
 
     for path, target in REDIRECTS.items():
         write(path + "index.html", stub(path, target))
 
-    urls = "".join(f"  <url><loc>{SITE}/{p['slug']}</loc><lastmod>{today}</lastmod></url>\n" for p in PAGES)
+    urls = []
+    for p in PAGES:
+        pair = {"en": f"{SITE}/{p['slug']}", "es": f"{SITE}/es/{p['slug']}"}
+        links = "".join(f'<xhtml:link rel="alternate" hreflang="{k}" href="{v}"/>' for k, v in pair.items())
+        for loc in pair.values():
+            urls.append(f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod>{links}</url>\n")
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n')
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+          + "".join(urls) + '</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
 
     cname = ROOT / "CNAME"
@@ -272,7 +370,7 @@ def main():
     elif cname.exists():
         cname.unlink()
 
-    print(f"Built {len(PAGES)} pages, 404, {len(REDIRECTS)} redirect stubs.")
+    print(f"Built {len(PAGES)} pages in English and Spanish, 404, {len(REDIRECTS)} redirect stubs.")
     print("  privacy page: ", "ON" if flags["privacy"] else "MISSING (launch gate still open, footer link hidden)")
     print("  CNAME:        ", "written" if WRITE_CNAME else "not written (test URL stays reachable)")
 

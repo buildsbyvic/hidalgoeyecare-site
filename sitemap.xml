@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://hidalgoeyecare.com/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/services/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/eyewear/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/insurance/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/about-us/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/contact-us/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://hidalgoeyecare.com/privacy/</loc><lastmod>2026-11-05</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://hidalgoeyecare.com/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/"/></url>
+  <url><loc>https://hidalgoeyecare.com/services/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/services/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/services/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/services/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/services/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/services/"/></url>
+  <url><loc>https://hidalgoeyecare.com/eyewear/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/eyewear/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/eyewear/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/eyewear/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/eyewear/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/eyewear/"/></url>
+  <url><loc>https://hidalgoeyecare.com/insurance/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/insurance/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/insurance/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/insurance/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/insurance/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/insurance/"/></url>
+  <url><loc>https://hidalgoeyecare.com/about-us/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/about-us/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/about-us/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/about-us/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/about-us/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/about-us/"/></url>
+  <url><loc>https://hidalgoeyecare.com/contact-us/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/contact-us/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/contact-us/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/contact-us/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/contact-us/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/contact-us/"/></url>
+  <url><loc>https://hidalgoeyecare.com/privacy/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/privacy/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/privacy/"/></url>
+  <url><loc>https://hidalgoeyecare.com/es/privacy/</loc><lastmod>2026-11-05</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://hidalgoeyecare.com/privacy/"/><xhtml:link rel="alternate" hreflang="es" href="https://hidalgoeyecare.com/es/privacy/"/></url>
 </urlset>
