@@ -105,6 +105,8 @@ LD = {
 
 # Runs before first paint, so the page never flashes the wrong language.
 # Saved choice first, then the browser's language. Without JavaScript both languages show.
+UMAMI_ID = "3671e0c4-16dc-490d-964d-3c58b85f0c14"
+
 LANG_BOOT = (
     "<script>(function(){var h=document.documentElement,l;"
     "try{l=localStorage.getItem('lang')}catch(e){}"
@@ -211,6 +213,8 @@ def layout(page, body, root, flags, year, canonical=True):
     if page.get("src") in ("home", "contact"):
         head.append('<script type="application/ld+json">' + json.dumps(LD, ensure_ascii=False) + '</script>')
     head.append(f'<script src="{root}assets/js/site.js" defer></script>')
+    # Privacy-friendly visit and click counts (no cookies). Only counts on the real domain, not previews.
+    head.append(f'<script defer src="https://cloud.umami.is/script.js" data-website-id="{UMAMI_ID}" data-domains="hidalgoeyecare.com"></script>')
 
     doc = (
         f'<!DOCTYPE html>\n<html lang="en" data-title-en="{e(page["title"])}" data-title-es="{e(page["title_es"])}">\n<head>\n' + "\n".join(head) + '\n</head>\n<body>\n'

@@ -131,4 +131,16 @@
     });
     draw();
   });
+  /* Count call, online booking and directions clicks in Umami (no cookies, no personal data) */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || !window.umami) return;
+    var h = a.getAttribute('href'), name = null;
+    if (h.indexOf('tel:') === 0) name = 'Call';
+    else if (h.indexOf('book2.getweave.com') !== -1) name = 'Request appointment';
+    else if (/maps\.apple\.com|google\.com\/maps\/dir/.test(h)) name = 'Directions';
+    if (!name) return;
+    var spot = a.closest('.mobile-bar') ? 'phone bar' : a.closest('header') ? 'header' : a.closest('footer') ? 'footer' : 'page';
+    window.umami.track(name, { page: location.pathname, spot: spot, lang: document.documentElement.getAttribute('data-lang') || 'en' });
+  });
 })();
